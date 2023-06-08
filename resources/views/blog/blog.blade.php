@@ -94,7 +94,7 @@
     <script src="https://cdn.jsdelivr.net/npm/swiper@9/swiper-element-bundle.min.js"></script>
 
     <!-- Initialize Swiper -->
-    <script>
+    {{-- <script>
         const progressCircle = document.querySelector(".autoplay-progress svg");
         const progressContent = document.querySelector(".autoplay-progress span");
 
@@ -104,7 +104,7 @@
             progressCircle.style.setProperty("--progress", 1 - progress);
             progressContent.textContent = `${Math.ceil(time / 1000)}s`;
         });
-    </script>
+    </script> --}}
     <!-- Carousel wrapper -->
 
     <div class="container"

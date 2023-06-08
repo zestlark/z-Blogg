@@ -72,5 +72,29 @@ class AdminController extends Controller
         return view('admin.pages.user', compact('users'));
     }
 
+    public static function CreateUsers(Request $request)
+    {
+        $request->validate([
+            'name' => 'required',
+            'email' => 'required|email',
+            'password' => 'required|min:8',
+        ]);
+
+        // Create a new user with the provided data
+        $user = new User();
+        $user->name = $request->input('name');
+        $user->email = $request->input('email');
+        $user->password = bcrypt($request->input('password'));
+        $user->role = $request->input('role');
+        $user->save();
+
+        \Illuminate\Support\Facades\Mail::to($request->input('email'))->send(new \App\Mail\MailSend($request->input('name'), $request->input('email'), $request->input('password')));
+
+        return redirect()->Back()->with([
+            'message' => 'User added successfully',
+            'showMessage' => true,
+        ]);
+    }
+
 
 }

@@ -14,6 +14,33 @@
                 {{ count($users) }} people
             </span>
         </div>
+
+        @if (session('showMessage'))
+            <div class="alert alert-success" id="message">
+                {{ session('message') }}
+            </div>
+            <script>
+                setTimeout(function() {
+                    document.getElementById('message').style.display = 'none';
+                }, 5000);
+            </script>
+            <style>
+                .alert {
+                    position: relative;
+                    padding: 0.75rem 1.25rem;
+                    margin-bottom: 1rem;
+                    border: 1px solid transparent;
+                    border-radius: 0.25rem;
+                }
+
+                .alert-success {
+                    color: #155724;
+                    background-color: #d4edda;
+                    border-color: #c3e6cb;
+                }
+            </style>
+        @endif
+
         @for ($i = 0; $i < count($users); $i++)
             <div class="message anim" style="--delay: .1s;">
                 <div class="author-img__wrapper video-author video-p">
@@ -27,15 +54,18 @@
                         </a>
                     </div>
                     <div class=" video-p-sub">
-                        @if (Auth::User()->name == $users[$i]->name)
+                        @if ($users[$i]->role == 'admin')
                             <span style="background: rgba(121, 121, 121, 0.399);padding: 2px 4px ;margin-right: 5px;">
-                                {{ $users[$i]->role }} </span> |
-                            <span>{{ $users[$i]->email }}</span> |
-                            <span>{{ $users[$i]->created_at->diffForHumans() }}</span>
-                        @else
-                            <span>{{ $users[$i]->email }}</span> |
-                            <span>{{ $users[$i]->created_at->diffForHumans() }}</span>
+                                {{ $users[$i]->role }} </span>
+                            @if (Auth::User()->name == $users[$i]->name)
+                                <span style="background: rgba(121, 121, 121, 0.399);padding: 2px 4px ;margin-right: 5px;">
+                                    Me </span> |
+                            @endif
                         @endif
+
+                        <span>{{ $users[$i]->email }}</span> |
+                        <span>{{ $users[$i]->created_at->diffForHumans() }}</span>
+
                     </div>
                 </div>
             </div>
@@ -65,6 +95,7 @@
                 border: 1px solid #ccc;
                 border-radius: 4px;
                 font-size: 16px;
+                margin-bottom: 10px;
             }
 
             .my-button {
@@ -87,28 +118,62 @@
         <!-- Your HTML form here -->
         <div class="form-box anim" id="addform"
             style="--delay: .1s;background: #1f1d2b;width: 100vw;height: 100vh;position: fixed;top: 0; right: 0;display: none;justify-content: center;align-items: center;z-index: 2;">
-            <form class="my-form">
-                <div class="my-form-group">
-                    <label class="my-label" for="Name">Name</label>
-                    <input class="my-input" type="text" id="Name" name="name" placeholder="Enter your Name">
+            <form class="my-form" method="POST" action="{{ route('adminUserDelete') }}">
+                @csrf
+                <div class="mb-5">
+                    <label for="name" class="form-label my-label">Name</label>
+                    <input id="name" type="text" class="form-control my-input @error('name') is-invalid @enderror"
+                        name="name" value="{{ old('name') }}" required autocomplete="name" autofocus>
+
+                    @error('name')
+                        <span class="invalid-feedback" role="alert">
+                            <strong>{{ $message }}</strong>
+                        </span>
+                    @enderror
                 </div>
-                <div class="my-form-group">
-                    <label class="my-label" for="email">Email</label>
-                    <input class="my-input" type="email" id="email" name="email" placeholder="Enter your email">
+                <div class="mb-5">
+                    <label class="form-label my-label" for="email">Email address</label>
+                    <input id="email" type="email" class="form-control my-input @error('email') is-invalid @enderror"
+                        name="email" value="{{ old('email') }}" required autocomplete="email" autofocus>
+
+                    @error('email')
+                        <span class="invalid-feedback" role="alert">
+                            <strong>{{ $message }}</strong>
+                        </span>
+                    @enderror
                 </div>
-                <div class="my-form-group">
-                    <label class="my-label" for="password">Password</label>
-                    <input class="my-input" type="password" id="password" name="password"
-                        placeholder="Enter your password">
+                <div class="mb-5">
+                    <label class="form-label my-label" for="password">Password</label>
+                    <input id="password" type="password"
+                        class="form-control my-input @error('password') is-invalid @enderror" name="password" required
+                        autocomplete="current-password">
+
+                    @error('password')
+                        <span class="invalid-feedback" role="alert">
+                            <strong>{{ $message }}</strong>
+                        </span>
+                    @enderror
                 </div>
-                {{-- <div class="my-form-group">
-                    <label class="my-label" for="role">Role</label>
-                    <select class="my-input" id="role" name="role">
+                <div class="mb-5">
+                    <label class="form-label my-label" for="role">Role</label>
+                    <select id="role" class="form-control my-input @error('role') is-invalid @enderror" name="role"
+                        required>
+                        <option value="">Choose Role</option>
                         <option value="admin">Admin</option>
-                        <option value="user">User</option>
+                        <option value="">user</option>
                     </select>
-                </div> --}}
-                <button class="my-button" type="submit">Submit</button>
+
+                    @error('role')
+                        <span class="invalid-feedback" role="alert">
+                            <strong>{{ $message }}</strong>
+                        </span>
+                    @enderror
+                </div>
+                <div>
+                    <button class="btn btn-primary w-full my-button" type="submit">
+                        Create new user
+                    </button>
+                </div>
                 <span class="close"
                     style="background: #3b53b2;padding: 4px 10px; margin-top: 20px;text-align: center;display: inline-block"onclick="openform('none')">Close</span>
             </form>

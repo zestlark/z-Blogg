@@ -28,7 +28,8 @@
 
                 <div class="{{ $ispost == 'true' ? 'col-12' : ($count == 1 ? 'col-lg-8' : 'col-lg-4') }} mb-5">
                     <div class="d-flex mb-4">
-                        <img class="img-fluid w-100" src="{{ $blog->url }}" alt="">
+                        <img class="img-fluid w-100" src="{{ $blog->url }}" alt=""
+                            style="max-height: 350px;object-fit: cover;">
                     </div>
                     <span><small class="text-muted">{{ $blog->created_at }}</small></span>
                     <h2 class="fw-bold">{{ $blog->title }}</h2>

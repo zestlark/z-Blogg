@@ -16,7 +16,7 @@
     <div class="container">
         <div class="sidebar">
             <span class="logo">S</span>
-            <a class="logo-expand" href="#">skateboard</a>
+            <a class="logo-expand" href="#">Admin Panel</a>
             <div class="side-wrapper">
                 <div class="side-title">MENU</div>
                 <div class="side-menu">
