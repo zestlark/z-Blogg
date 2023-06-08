@@ -19,7 +19,7 @@
                 </div>
                 <div class="msg-wrapper">
                     <div class="msg__name video-p-name"><a
-                            href="blog?author={{ $author[$i]->author }}">{{ $author[$i]->author }}</a></div>
+                            href="blog/author?author={{ $author[$i]->author }}">{{ $author[$i]->author }}</a></div>
                     <div class="msg__content video-p-sub">
                         @if (Auth::User()->name == $author[$i]->author)
                             <span>by you </span>

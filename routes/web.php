@@ -36,8 +36,10 @@ Route::get('/logout', function () {
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
-Route::get('admin', [App\Http\Controllers\AdminController::class, 'index'])->name('admin');
-Route::get('admin/blog/', [App\Http\Controllers\AdminController::class, 'blogFilter'])->name('blogFilter');
-Route::get('admin/deleteblog', [App\Http\Controllers\AdminController::class, 'deleteblog'])->name('deleteblog');
-Route::get('admin/blog/{title}', [App\Http\Controllers\AdminController::class, 'blog'])->name('adminBlog');
-Route::get('admin/author/', [App\Http\Controllers\AdminController::class, 'author'])->name('adminAuthor');
+Route::get('admin', [App\Http\Controllers\AdminController::class, 'index'])->name('admin')->middleware('admin');
+Route::get('admin/blog/', [App\Http\Controllers\AdminController::class, 'blogFilter'])->name('blogFilter')->middleware('admin');
+Route::get('admin/blog/author/', [App\Http\Controllers\AdminController::class, 'blogFilter'])->name('blogFilterAuthor')->middleware('admin');
+Route::get('admin/deleteblog', [App\Http\Controllers\AdminController::class, 'deleteblog'])->name('deleteblog')->middleware('admin');
+Route::get('admin/blog/{title}', [App\Http\Controllers\AdminController::class, 'blog'])->name('adminBlog')->middleware('admin');
+Route::get('admin/author/', [App\Http\Controllers\AdminController::class, 'author'])->name('adminAuthor')->middleware('admin');
+Route::get('admin/users/', [App\Http\Controllers\AdminController::class, 'users'])->name('adminUser')->middleware('admin');

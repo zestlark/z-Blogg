@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Foundation\Auth\User;
 use Illuminate\Http\Request;
 use App\Blogs;
+use Illuminate\Support\Facades\Auth;
 
 class AdminController extends Controller
 {
@@ -62,6 +64,12 @@ class AdminController extends Controller
             'showMessage' => true,
         ]);
         ;
+    }
+
+    public static function users(Request $request)
+    {
+        $users = User::select('name', 'email', 'created_at', 'role')->get();
+        return view('admin.pages.user', compact('users'));
     }
 
 

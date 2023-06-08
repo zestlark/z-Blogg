@@ -1,7 +1,7 @@
 @extends('admin.layout.main')
 @section('page')
     <div class="stream-area p-5">
-        <div class="video-stream" style="max-width: 800px">
+        <div class="video-stream">
             <img id="my_video_1" width="100%" height="267px" src="{{ $blogs->url }}" />
             <div class="video-detail">
                 <div class="video-content">
@@ -42,28 +42,29 @@
                 </div>
             </div>
         </div>
-        @if (count($moreBy) > 1)
-            <div class="chat-stream" style="max-width: 800px">
-                <div class="chat-vid__container">
+    </div>
+    @if (count($moreBy) > 1)
+        <div class="chat-stream" style="position: relative;left: -320px;min-width: 300px;">
+            <div class="chat-vid__container">
 
-                    <div class="chat-vid__title anim" style="--delay: .3s">More by {{ $blogs->author }}</div>
-                    @foreach ($moreBy as $more)
-                        <div class="chat-vid anim" style="--delay: .4s">
-                            <a href="{{ $more->title }}">
-                                <div class="chat-vid__wrapper">
-                                    <img class="chat-vid__img" src="{{ $more->url }}" />
-                                    <div class="chat-vid__content">
-                                        <div class="chat-vid__name">{{ $more->title }}</div>
-                                        <div class="chat-vid__by">{{ $more->keyword }}</div>
-                                        <div class="chat-vid__info">1{{ $more->created_at }}
-                                        </div>
+                <div class="chat-vid__title anim" style="--delay: .3s">More by {{ $blogs->author }}</div>
+                @foreach ($moreBy as $more)
+                    <div class="chat-vid anim" style="--delay: .4s">
+                        <a href="./{{ $more->title }}">
+                            <div class="chat-vid__wrapper">
+                                <img class="chat-vid__img" src="{{ $more->url }}" />
+                                <div class="chat-vid__content">
+                                    <div class="chat-vid__name">{{ $more->title }}</div>
+                                    <div class="chat-vid__by">{{ $more->keyword }}</div>
+                                    <div class="chat-vid__info">1{{ $more->created_at }}
                                     </div>
                                 </div>
-                            </a>
-                        </div>
-                    @endforeach
-                </div>
+                            </div>
+                        </a>
+                    </div>
+                @endforeach
             </div>
-        @endif
-    </div>
+        </div>
+    @endif
+
 @endsection
