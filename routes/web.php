@@ -35,6 +35,8 @@ Route::get('/logout', function () {
 });
 
 Route::post('/Comment/add', [App\Http\Controllers\CommentsController::class, 'create'])->name('AddComment')->middleware('auth');
+Route::post('/Comment/reply', [App\Http\Controllers\CommentsController::class, 'createreply'])->name('ReplyComment')->middleware('auth');
+
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 

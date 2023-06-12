@@ -1,3 +1,6 @@
+@php
+    use App\Models\Replies;
+@endphp
 <section class="py-5">
     <div class="container">
 
@@ -86,33 +89,56 @@
                                     <div class="card-body">
                                         <h5 class="card-title"><img width="35p" style="margin-right:10px"
                                                 src="https://img.icons8.com/?size=512&id=7820&format=png"
-                                                alt="">{{ $comment->Username }}</h5>
+                                                alt="">{{ $comment->Username }} {{ $comment->id }}</h5>
                                         <p class="card-text">{{ $comment->comment }}</p>
                                         <p class="card-text"><small
                                                 class="text-muted">{{ $comment->created_at->diffForHumans() }}</small>
                                         </p>
+                                        <button class="mt-2" onclick="openreplyform(this)">Reply</button>
+                                    </div>
+                                    <div class="m-5 replyform" style="display: none;">
+                                        <form action="{{ route('ReplyComment') }}" method="POST">
+                                            @csrf
+                                            <input type="hidden" name="onCommentId" value="{{ $comment->id }}">
+                                            <input type="hidden" name="onPostTitle" value="{{ $blogs[0]->title }}">
+                                            <div class="form-group mb-3">
+                                                <textarea name="comment" class="form-control" rows="3" required></textarea>
+                                            </div>
+                                            <button type="submit" class="btn btn-primary">Reply</button>
+                                        </form>
                                     </div>
                                 </div>
-                                <div class="card mb-2 reply">
-                                    <style>
-                                        .reply {
-                                            width: 80%;
-                                            margin-left: 20%;
-                                            border: 2px solid black
-                                        }
-                                    </style>
-                                    <div class="card-body" style="background: #e2e2e2ac;border 2px solid black">
-                                        <p class="card-text mb-4"><small class="text-muted">replied to</small>
-                                        </p>
-                                        <h5 class="card-title"><img width="35p" style="margin-right:10px"
-                                                src="https://img.icons8.com/?size=512&id=7820&format=png"
-                                                alt="">{{ $comment->Username }}</h5>
-                                        <p class="card-text">{{ $comment->comment }}</p>
-                                        <p class="card-text"><small
-                                                class="text-muted">{{ $comment->created_at->diffForHumans() }}</small>
-                                        </p>
-                                    </div>
-                                </div>
+
+                                <?php
+                                $replies = Replies::where('onCommentId', $comment->id)
+                                    ->where('onPostTitle', $blogs[0]->title)
+                                    ->get();
+                                ?>
+                                @if (count($replies) > 0)
+                                    @foreach ($replies as $reply)
+                                        <div class="card mb-2 reply">
+                                            <style>
+                                                .reply {
+                                                    width: 80%;
+                                                    margin-left: 20%;
+                                                    border: 2px solid black
+                                                }
+                                            </style>
+                                            <div class="card-body" style="background: #e2e2e2ac;border 2px solid black">
+                                                <p class="card-text mb-4"><small class="text-muted">replied to
+                                                        {{ $comment->Username }}</small>
+                                                </p>
+                                                <h5 class="card-title"><img width="35p" style="margin-right:10px"
+                                                        src="https://img.icons8.com/?size=512&id=7820&format=png"
+                                                        alt="">{{ $reply->Username }}</h5>
+                                                <p class="card-text">{{ $reply->comment }}</p>
+                                                <p class="card-text"><small
+                                                        class="text-muted">{{ $reply->created_at->diffForHumans() }}</small>
+                                                </p>
+                                            </div>
+                                        </div>
+                                    @endforeach
+                                @endif
                             @endforeach
                         </div>
                     </div>
@@ -121,4 +147,22 @@
             {{-- comment --}}
         @endif
     </div>
+    <script>
+        function openreplyform(button) {
+            // Get the closest parent element with the 'card' class
+            var card = button.closest('.card');
+
+            // Get the reply form container inside the card
+            var replyForm = card.querySelector('.replyform');
+
+            // Toggle the visibility of the reply form
+            if (replyForm.style.display === 'none') {
+                replyForm.style.display = 'block';
+            } else {
+                replyForm.style.display = 'none';
+            }
+        }
+    </script>
+
+
 </section>
