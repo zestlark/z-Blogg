@@ -9,10 +9,7 @@
                     <div class="row">
                         <div class="col-lg-10 col-md-9 col-xl-7 mx-auto">
                             <div class="text-center mb-12">
-                                <!-- <a class="d-inline-block" href="#">
-                                                                                      <img src="https://preview.webpixels.io/web/img/logos/clever-primary-sm.svg" class="h-12" alt="...">
-                                                          
-                                                                                  </a> -->
+
                                 <span class="d-inline-block d-lg-block h1 mb-lg-6 me-3">👋</span>
                                 <h1 class="ls-tight font-bolder h2">
                                     Welcome back!
