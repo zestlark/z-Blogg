@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Comments;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -22,7 +23,8 @@ class Blogs extends Controller
         if ($title) {
             $blogs = DB::table('blogs')->where('title', $title)->get();
             $ispost = 'true';
-            return view('blog.blog', compact('blogs', 'ispost'));
+            $comments = Comments::where('onPostTitle', $title)->get();
+            return view('blog.blog', compact('blogs', 'ispost', 'comments'));
         }
 
     }

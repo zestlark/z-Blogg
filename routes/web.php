@@ -34,6 +34,8 @@ Route::get('/logout', function () {
     return view('welcome');
 });
 
+Route::post('/Comment/add', [App\Http\Controllers\CommentsController::class, 'create'])->name('AddComment')->middleware('auth');
+
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
 Route::get('admin', [App\Http\Controllers\AdminController::class, 'index'])->name('admin')->middleware('admin');

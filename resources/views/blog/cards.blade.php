@@ -54,5 +54,71 @@
             @endforeach
 
         </div>
+
+        @if (isset($comments))
+            <div class="container">
+                <div class="row mt-5" style="margin-top: 200px">
+                    <div class="col-md-8  mt-5">
+                        <h2>Comments</h2>
+
+                        @auth
+                            <div class="card">
+                                <div class="card-body" style="background: #e2e2e2ac;border-radius:10px;">
+                                    <!-- Comment Form -->
+                                    <form action="{{ route('AddComment') }}" method="POST">
+                                        @csrf
+                                        <input type="hidden" name="title" value="{{ $blogs[0]->title }}">
+                                        <div class="form-group mb-3">
+                                            <label for="comment">Comment:</label>
+                                            <textarea name="comment" class="form-control" rows="3" required></textarea>
+                                        </div>
+                                        <button type="submit" class="btn btn-primary">Submit</button>
+                                    </form>
+                                </div>
+                            </div>
+                        @endauth
+
+                        <div class="mt-4">
+                            <!-- Comment List -->
+                            {{-- {{ $comment->created_at->format('M d, Y') }} --}}
+                            @foreach ($comments as $comment)
+                                <div class="card mb-2">
+                                    <div class="card-body">
+                                        <h5 class="card-title"><img width="35p" style="margin-right:10px"
+                                                src="https://img.icons8.com/?size=512&id=7820&format=png"
+                                                alt="">{{ $comment->Username }}</h5>
+                                        <p class="card-text">{{ $comment->comment }}</p>
+                                        <p class="card-text"><small
+                                                class="text-muted">{{ $comment->created_at->diffForHumans() }}</small>
+                                        </p>
+                                    </div>
+                                </div>
+                                <div class="card mb-2 reply">
+                                    <style>
+                                        .reply {
+                                            width: 80%;
+                                            margin-left: 20%;
+                                            border: 2px solid black
+                                        }
+                                    </style>
+                                    <div class="card-body" style="background: #e2e2e2ac;border 2px solid black">
+                                        <p class="card-text mb-4"><small class="text-muted">replied to</small>
+                                        </p>
+                                        <h5 class="card-title"><img width="35p" style="margin-right:10px"
+                                                src="https://img.icons8.com/?size=512&id=7820&format=png"
+                                                alt="">{{ $comment->Username }}</h5>
+                                        <p class="card-text">{{ $comment->comment }}</p>
+                                        <p class="card-text"><small
+                                                class="text-muted">{{ $comment->created_at->diffForHumans() }}</small>
+                                        </p>
+                                    </div>
+                                </div>
+                            @endforeach
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {{-- comment --}}
+        @endif
     </div>
 </section>
